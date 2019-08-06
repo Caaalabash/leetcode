@@ -19,6 +19,11 @@ import "math"
 
 // 时间复杂度: 对于整数x, 需要循环log10(x)次, 结果为O(log(x))
 // 空间复杂度: 结果为O(1)
+
+// [-512, 511] 315
+// 1. pop = 5 ans = 5 x = 31
+// 2. pop = 1 ans = 51 x = 3
+// 3. pop = 3 ans = 513 x = 0
 func reverse (x int) int {
 	var ans, pop int
 
