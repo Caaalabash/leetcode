@@ -14,18 +14,16 @@ func searchInsert(nums []int, target int) int {
 
 // 二分查找的话, 可以降低到O(logn)的时间复杂度
 func searchInsertA(nums []int, target int) int {
-	left, right := 0, len(nums) - 1
+	left, right := 0, len(nums)
 
-	for left <= right {
+	for left < right {
 		mid := (left + right) >> 1
 		v := nums[mid]
 
-		if target > v {
-			left = mid + 1
-		} else if target < v {
-			right = mid - 1
+		if v >= target {
+			right = mid
 		} else {
-			return mid
+			left = mid + 1
 		}
 	}
 	return left
