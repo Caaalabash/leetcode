@@ -2,14 +2,14 @@ package problem0017
 
 // 键盘映射表
 var phoneMap = map[byte]string{
-	'2':"abc",
-	'3':"def",
-	'4':"ghi",
-	'5':"jkl",
-	'6':"mno",
-	'7':"pqrs",
-	'8':"tuv",
-	'9':"wxyz",
+	'2': "abc",
+	'3': "def",
+	'4': "ghi",
+	'5': "jkl",
+	'6': "mno",
+	'7': "pqrs",
+	'8': "tuv",
+	'9': "wxyz",
 }
 
 func letterCombinations(digits string) []string {
@@ -33,7 +33,7 @@ func dfs(digits string, index int, temp string, result []string) []string {
 	}
 	option := phoneMap[digits[index]]
 	for i := 0; i < len(option); i++ {
-		result = dfs(digits, index + 1, temp + string(option[i]), result)
+		result = dfs(digits, index+1, temp+string(option[i]), result)
 	}
 	return result
 }

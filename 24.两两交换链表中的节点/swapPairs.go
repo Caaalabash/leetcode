@@ -1,7 +1,7 @@
 package problem0024
 
 type ListNode struct {
-	Val int
+	Val  int
 	Next *ListNode
 }
 

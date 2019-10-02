@@ -1,12 +1,13 @@
 package problem0324
+
 // 老实孩子的做法, 依旧是两点：
 // 1. 首先是2的幂
 // 2. 1出现在奇数位置上
 func isPowerOfFour(num int) bool {
 	// 先判断是否为2的幂
-	if num > 0 && num & (num - 1) == 0 {
+	if num > 0 && num&(num-1) == 0 {
 		// 如果num-1中1的个数为偶数, 则通过
-		if hammingWeight(num - 1) & 1 == 0 {
+		if hammingWeight(num-1)&1 == 0 {
 			return true
 		}
 		return false
@@ -18,7 +19,7 @@ func isPowerOfFour(num int) bool {
 func hammingWeight(num int) int {
 	var count int
 	for i := 0; i < 32; i++ {
-		if  num & 1 == 1 {
+		if num&1 == 1 {
 			count += 1
 		}
 		num >>= 1
@@ -32,5 +33,5 @@ func hammingWeight(num int) int {
 // 那么要判断1是否出现在奇数位置上，只需要判断 num & 0xaaaaaaaa == 0即可
 // 最简答案
 func isPowerOfFour1(num int) bool {
-	return num > 0 && num & (num - 1) == 0 && num & 0xaaaaaaaa == 0
+	return num > 0 && num&(num-1) == 0 && num&0xaaaaaaaa == 0
 }

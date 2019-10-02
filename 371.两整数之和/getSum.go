@@ -4,9 +4,9 @@ package problem0371
 func getSum(a int, b int) int {
 	// 循环此过程，直到进位为 0
 	for b != 0 {
-		t := (a&b)<<1
+		t := (a & b) << 1
 		// a和b的无进位结果
-		a = a^b
+		a = a ^ b
 		// a和b的进位结果
 		b = t
 	}

@@ -7,7 +7,7 @@ func subsets(nums []int) [][]int {
 	return result
 }
 
-func backTracking(nums []int, index int, result *[][]int, temp []int)  {
+func backTracking(nums []int, index int, result *[][]int, temp []int) {
 	*result = append(*result, temp)
 
 	for i := index; i < len(nums); i++ {

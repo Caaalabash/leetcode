@@ -9,7 +9,7 @@ func isPalindrome(x int) bool {
 	}
 	num, cur := x, 0
 	for num != 0 {
-		cur = cur * 10 + num % 10
+		cur = cur*10 + num%10
 		num /= 10
 	}
 	return x == cur
@@ -21,7 +21,7 @@ func isPalindromeA(x int) bool {
 		return false
 	}
 	s := strconv.Itoa(x)
-	for i, j := 0, len(s) - 1; i < j; i, j = i + 1, j - 1 {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
 		if s[i] != s[j] {
 			return false
 		}

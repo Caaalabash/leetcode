@@ -25,7 +25,7 @@ func backTracking(nums []int) [][]int {
 	}
 	var result [][]int
 	for i, v := range nums {
-		if i + 1 < len(nums) && v == nums[i+1] {
+		if i+1 < len(nums) && v == nums[i+1] {
 			continue
 		}
 

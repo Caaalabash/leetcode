@@ -1,9 +1,10 @@
 package problem0002
 
 type ListNode struct {
-	Val int
+	Val  int
 	Next *ListNode
 }
+
 // 输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
 // 输出：7 -> 0 -> 8
 // 原因：342 + 465 = 807
@@ -11,7 +12,7 @@ type ListNode struct {
 // 通过一个计数器变量来处理进位的问题
 // 如果两个链表遍历完后, 计数器为1, 则在新链表最前方添加节点1
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	result := &ListNode{0,nil}
+	result := &ListNode{0, nil}
 	l, carry := result, 0
 
 	for {
@@ -43,4 +44,3 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 	return result
 }
-

@@ -4,7 +4,7 @@ package problem0011
 // 20ms 5.9mb
 func maxAreaA(height []int) int {
 	var area int
-	left, right, temp := 0, len(height) - 1, 0
+	left, right, temp := 0, len(height)-1, 0
 
 	for left != right {
 		width := right - left

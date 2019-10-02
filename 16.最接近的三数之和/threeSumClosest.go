@@ -9,10 +9,10 @@ func threeSumClosest(nums []int, target int) int {
 	ans := nums[0] + nums[1] + nums[2]
 	lens := len(nums)
 	for i := 0; i < lens; i++ {
-		left, right := i + 1, lens - 1
+		left, right := i+1, lens-1
 		for left < right {
 			total := nums[i] + nums[left] + nums[right]
-			if abs(target - total) < abs(target - ans) {
+			if abs(target-total) < abs(target-ans) {
 				ans = total
 			}
 			if total > target {
@@ -32,4 +32,3 @@ func abs(val int) int {
 	}
 	return val
 }
-

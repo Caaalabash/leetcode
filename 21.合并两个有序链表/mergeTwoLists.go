@@ -1,9 +1,8 @@
 package problem0021
 
-
 type ListNode struct {
-	Val int
-    Next *ListNode
+	Val  int
+	Next *ListNode
 }
 
 // 递归做法

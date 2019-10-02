@@ -8,4 +8,3 @@ func findTheDifference(s string, t string) byte {
 	result ^= t[len(s)]
 	return result
 }
-

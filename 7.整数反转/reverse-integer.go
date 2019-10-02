@@ -24,18 +24,18 @@ import "math"
 // 1. pop = 5 ans = 5 x = 31
 // 2. pop = 1 ans = 51 x = 3
 // 3. pop = 3 ans = 513 x = 0
-func reverse (x int) int {
+func reverse(x int) int {
 	var ans, pop int
 
 	for x != 0 {
 		pop = x % 10
-		if  ans > math.MaxInt32 / 10 ||
-			ans == math.MaxInt32 / 10 && pop > 7 ||
-			ans < math.MinInt32 / 10 ||
+		if ans > math.MaxInt32/10 ||
+			ans == math.MaxInt32/10 && pop > 7 ||
+			ans < math.MinInt32/10 ||
 			ans == math.MinInt32 && pop < -8 {
 			return 0
 		}
-		ans = ans * 10 + pop
+		ans = ans*10 + pop
 		x /= 10
 	}
 	return ans

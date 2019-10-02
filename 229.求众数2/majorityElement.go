@@ -14,7 +14,7 @@ func majorityElement(nums []int) []int {
 		m[nums[i]] = count
 	}
 	for k, v := range m {
-		if v > len(nums) / 3 {
+		if v > len(nums)/3 {
 			result = append(result, k)
 		}
 	}

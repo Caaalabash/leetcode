@@ -29,10 +29,10 @@ func backTracking(candidates []int, target int, result *[][]int, temp []int, ind
 	}
 	for i := index; i < len(candidates); i++ {
 		temp = append(temp, candidates[i])
-		if !backTracking(candidates, target - candidates[i], result, temp, i) {
+		if !backTracking(candidates, target-candidates[i], result, temp, i) {
 			break
 		}
-		temp = temp[:len(temp) - 1]
+		temp = temp[:len(temp)-1]
 	}
 	return true
 }

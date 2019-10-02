@@ -5,13 +5,13 @@ package problem0013
 func romanToInt(s string) int {
 	var ans int
 	m := map[string]int{
-		"I": 1,
-		"V": 5,
-		"X": 10,
-		"L": 50,
-		"C": 100,
-		"D": 500,
-		"M": 1000,
+		"I":  1,
+		"V":  5,
+		"X":  10,
+		"L":  50,
+		"C":  100,
+		"D":  500,
+		"M":  1000,
 		"IV": 4,
 		"IX": 9,
 		"XL": 40,
@@ -20,8 +20,8 @@ func romanToInt(s string) int {
 		"CM": 900,
 	}
 	for i := 0; i < len(s); {
-		if i + 1 < len(s) && m[s[i: i + 2]] > 0 {
-			ans += m[s[i: i + 2]]
+		if i+1 < len(s) && m[s[i:i+2]] > 0 {
+			ans += m[s[i:i+2]]
 			i += 2
 		} else if value, ok := m[string(s[i])]; ok {
 			ans += value

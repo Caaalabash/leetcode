@@ -11,7 +11,6 @@ func searchInsert(nums []int, target int) int {
 	return len(nums)
 }
 
-
 // 二分查找的话, 可以降低到O(logn)的时间复杂度
 func searchInsertA(nums []int, target int) int {
 	left, right := 0, len(nums)

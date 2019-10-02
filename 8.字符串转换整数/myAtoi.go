@@ -10,7 +10,7 @@ import (
 // 实现一个atoi函数, 使其能将字符串转换成整数
 // 1. 丢弃无用的开头空格字符,
 func myAtoi(str string) int {
-	isNotNumber := func (s string) bool {
+	isNotNumber := func(s string) bool {
 		return s < "0" || s > "9"
 	}
 	// 取出空格
@@ -46,4 +46,3 @@ func myAtoi(str string) int {
 	}
 	return int(res)
 }
-
