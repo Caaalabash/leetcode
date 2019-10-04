@@ -3,6 +3,7 @@ package problem0342
 // 老实孩子的做法, 依旧是两点：
 // 1. 首先是2的幂
 // 2. 1出现在奇数位置上
+// 0ms 2mb
 func isPowerOfFour(num int) bool {
 	// 先判断是否为2的幂
 	if num > 0 && num&(num-1) == 0 {
@@ -18,11 +19,9 @@ func isPowerOfFour(num int) bool {
 // 位1的个数
 func hammingWeight(num int) int {
 	var result int
-	for num != 0 {
-		if num&1 == 1 {
-			result += 1
-		}
-		num >>= 1
+	for num > 0 {
+		num &= num - 1
+		result++
 	}
 	return result
 }
