@@ -24,7 +24,7 @@ func search(nums []int, target int) int {
 		if offsetIndex == -1 {
 			return -1
 		}
-		return rotateIndex+offsetIndex
+		return rotateIndex + offsetIndex
 	}
 }
 
