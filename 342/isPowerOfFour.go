@@ -1,4 +1,4 @@
-package problem0324
+package problem0342
 
 // 老实孩子的做法, 依旧是两点：
 // 1. 首先是2的幂
@@ -17,14 +17,14 @@ func isPowerOfFour(num int) bool {
 
 // 位1的个数
 func hammingWeight(num int) int {
-	var count int
-	for i := 0; i < 32; i++ {
+	var result int
+	for num != 0 {
 		if num&1 == 1 {
-			count += 1
+			result += 1
 		}
 		num >>= 1
 	}
-	return count
+	return result
 }
 
 // 奇淫巧技
