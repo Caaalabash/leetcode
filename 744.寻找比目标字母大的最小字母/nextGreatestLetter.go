@@ -11,7 +11,7 @@ func nextGreatestLetter(letters []byte, target byte) byte {
 			l = mid
 		}
 	}
-	// letters[l] <= target相等，则其下一位是比目标值大的最小字母
+	// letters[l] <= target时，则其下一位是比目标值大的最小字母
 	if letters[l] <= target {
 		// 溢出返回首位
 		if l == len(letters)-1 {
