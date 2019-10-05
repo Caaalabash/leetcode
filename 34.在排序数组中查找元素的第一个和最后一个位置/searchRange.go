@@ -1,25 +1,30 @@
 package problem0034
 
-// 首先二分查找搜索第一个索引, 完了向后for循环:)
+// 两次二分搜索
 func searchRange(nums []int, target int) []int {
-	left, right := 0, len(nums)-1
-
-	for left < right {
-		mid := (left + right) >> 1
-		if nums[mid] >= target {
-			right = mid
+	// 第一次二分: 取开始下标
+	startLeft, right := 0, len(nums)-1
+	for startLeft < right {
+		mid := (startLeft + right) >> 1
+		if nums[mid] < target {
+			startLeft = mid + 1
 		} else {
-			left = mid + 1
+			right = mid
 		}
 	}
-	if len(nums) < 1 || nums[left] != target {
+	// 不存在直接返回
+	if len(nums) < 1 || nums[startLeft] != target {
 		return []int{-1, -1}
 	}
-	for i := left; i < len(nums); i++ {
-		if nums[i] != target {
-			break
+	// 第二次二分: 取结束下标
+	endLeft, right := 0, len(nums)-1
+	for endLeft < right {
+		mid := (endLeft + right + 1) >> 1
+		if nums[mid] > target {
+			right = mid - 1
+		} else {
+			endLeft = mid
 		}
-		right = i
 	}
-	return []int{left, right}
+	return []int{startLeft, endLeft}
 }
