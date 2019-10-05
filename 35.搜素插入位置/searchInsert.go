@@ -17,12 +17,10 @@ func searchInsertA(nums []int, target int) int {
 
 	for left < right {
 		mid := (left + right) >> 1
-		v := nums[mid]
-
-		if v >= target {
-			right = mid
-		} else {
+		if nums[mid] < target {
 			left = mid + 1
+		} else {
+			right = mid
 		}
 	}
 	return left
