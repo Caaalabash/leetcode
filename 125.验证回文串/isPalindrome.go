@@ -1,5 +1,6 @@
 package problem0125
 
+// 头尾指针 0ms 2.7mb
 func isPalindrome(s string) bool {
 	if len(s) == 0 {
 		return true
