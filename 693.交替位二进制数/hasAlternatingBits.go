@@ -1,4 +1,4 @@
-package problem693
+package problem0693
 
 func hasAlternatingBits(n int) bool {
 	prev := n & 1

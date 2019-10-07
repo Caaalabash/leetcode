@@ -1,4 +1,4 @@
-package problem441
+package problem0441
 
 func arrangeCoins(n int) int {
 	if n == 0 {

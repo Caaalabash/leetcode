@@ -1,4 +1,4 @@
-package problem70
+package problem0070
 
 // 动态规划
 // 状态转移方程 F(n) = F(n-1) + F(n-2)
