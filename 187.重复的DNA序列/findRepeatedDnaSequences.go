@@ -9,7 +9,7 @@ func findRepeatedDnaSequences(s string) []string {
 	result := make(map[string]struct{})
 
 	for i := 0; i <= len(s)-10; i++ {
-		str := s[i:i+10]
+		str := s[i : i+10]
 		if _, ok := m[str]; ok {
 			if _, ok = result[str]; !ok {
 				result[str] = struct{}{}
