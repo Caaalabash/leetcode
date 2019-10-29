@@ -21,4 +21,3 @@ func peakIndexInMountainArray(A []int) int {
 	}
 	return left
 }
-
