@@ -1,6 +1,6 @@
 package problem0645
 
-// 哈希表+数学: 等差数列求和 + 多余的数字 - nums列表 = 确实的数字
+// 哈希表+数学: 等差数列求和 + 多余的数字 - nums列表 = 缺失的数字
 func findErrorNums(nums []int) []int {
 	m := make(map[int]struct{})
 	total := len(nums) * (len(nums) + 1) / 2
