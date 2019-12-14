@@ -29,7 +29,7 @@ func addStrings(num1 string, num2 string) string {
 		builder.WriteByte('1')
 	}
 	data := builder.String()
-	for i := len(data)-1; i >= 0; i-- {
+	for i := len(data) - 1; i >= 0; i-- {
 		result.WriteByte(data[i])
 	}
 	return result.String()
