@@ -8,7 +8,7 @@ package problem0136
 // 自反: p ^ q ^ q = p
 func singleNumber(nums []int) int {
 	var result int
-	for i, l := 0, len(nums); i < l; i++ {
+	for i := 0; i < len(nums); i++ {
 		result ^= nums[i]
 	}
 	return result
