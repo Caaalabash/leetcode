@@ -7,32 +7,26 @@ type TreeNode struct {
 }
 
 func pathSum(root *TreeNode, sum int) [][]int {
-	var result [][]int
-
-	var helper func(node *TreeNode, sum int, container []int)
+	var (
+		result [][]int
+		helper func(node *TreeNode, sum int, container []int)
+	)
 	helper = func(node *TreeNode, sum int, container []int) {
-		sum -= node.Val
-		container = append(container, node.Val)
-		if node.Left == nil && node.Right == nil {
-			if sum == 0 {
-				t := make([]int, len(container))
-				copy(t, container)
-				result = append(result, t)
-			}
+		if node == nil {
 			return
 		}
-
-		if node.Left != nil {
-			helper(node.Left, sum, container)
+		sum -= node.Val
+		container = append(container, node.Val)
+		if node.Left == nil && node.Right == nil && sum == 0 {
+			t := make([]int, len(container))
+			copy(t, container)
+			result = append(result, t)
 		}
-		if node.Right != nil {
-			helper(node.Right, sum, container)
-		}
-	}
 
-	if root != nil {
-		helper(root, sum, []int{})
+		helper(node.Left, sum, container)
+		helper(node.Right, sum, container)
 	}
+	helper(root, sum, []int{})
 
 	return result
 }
