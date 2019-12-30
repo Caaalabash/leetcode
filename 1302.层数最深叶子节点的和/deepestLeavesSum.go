@@ -17,10 +17,9 @@ func deepestLeavesSum(root *TreeNode) int {
 			return
 		}
 		if depth > deep {
-			result = 0
+			result = node.Val
 			deep = depth
-		}
-		if depth == deep {
+		} else if depth == deep {
 			result += node.Val
 		}
 		dfs(node.Left, depth+1)
