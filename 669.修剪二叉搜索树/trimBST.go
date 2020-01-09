@@ -7,7 +7,6 @@ type TreeNode struct {
 }
 
 // 给定一颗二叉搜索树，同时给定边界[L, R]，返回修剪好的二叉搜索树的新的根节点
-//
 func trimBST(root *TreeNode, L int, R int) *TreeNode {
 	if root == nil {
 		return nil
