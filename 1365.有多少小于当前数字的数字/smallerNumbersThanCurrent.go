@@ -30,7 +30,7 @@ func smallerNumbersThanCurrent1(nums []int) []int {
 	result := make([]int, len(nums))
 	for i := 0; i < len(nums); i++ {
 		if nums[i] != 0 {
-			result[i] = cnt[nums[i] - 1]
+			result[i] = cnt[nums[i]-1]
 		}
 	}
 	return result
