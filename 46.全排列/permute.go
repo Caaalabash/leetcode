@@ -15,32 +15,24 @@ package problem0046
 func permute(nums []int) [][]int {
 	var (
 		result    [][]int
+		used      = make([]bool, len(nums))
 		backTrack func(path []int)
 	)
 	backTrack = func(path []int) {
 		if len(path) == len(nums) {
-			result = append(result, path)
+			temp := make([]int, len(path))
+			copy(temp, path)
+			result = append(result, temp)
 			return
 		}
 		for i := 0; i < len(nums); i++ {
-			// 排除不能选择的数字
-			hasDuplicate := false
-			for j := 0; j < len(path); j++ {
-				if path[j] == nums[i] {
-					hasDuplicate = true
-					break
-				}
-			}
-			if hasDuplicate {
+			if used[i] {
 				continue
 			}
-			// 做选择，处理引用问题
 			path = append(path, nums[i])
-			temp := make([]int, len(path))
-			copy(temp, path)
-			// 进入下一层决策树
-			backTrack(temp)
-			// 撤销选择
+			used[i] = true
+			backTrack(path)
+			used[i] = false
 			path = path[:len(path)-1]
 		}
 	}
