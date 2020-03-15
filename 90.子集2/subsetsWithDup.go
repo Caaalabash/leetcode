@@ -2,24 +2,27 @@ package problem0090
 
 import "sort"
 
+// 不重复体现在，backTrack中的for循环不存在重复的数字，那么先对nums进行排序，然后for循环时比较前一个即可
 func subsetsWithDup(nums []int) [][]int {
-	var result [][]int
-	sort.Ints(nums)
-	backTracking(nums, 0, &result, []int{})
-	return result
-}
+	var (
+		result    [][]int
+		backTrack func(index int, path []int)
+	)
+	backTrack = func(index int, path []int) {
+		temp := make([]int, len(path))
+		copy(temp, path)
+		result = append(result, temp)
 
-func backTracking(nums []int, index int, result *[][]int, temp []int) {
-	*result = append(*result, temp)
-
-	for i := index; i < len(nums); i++ {
-		if i > index && nums[i] == nums[i-1] {
-			continue
+		for i := index; i < len(nums); i++ {
+			if i > index && nums[i] == nums[i-1] {
+				continue
+			}
+			path = append(path, nums[i])
+			backTrack(i+1, path)
+			path = path[:len(path)-1]
 		}
-		temp = append(temp, nums[i])
-		t := make([]int, len(temp))
-		copy(t, temp)
-		backTracking(nums, i+1, result, t)
-		temp = temp[:len(temp)-1]
 	}
+	sort.Ints(nums)
+	backTrack(0, []int{})
+	return result
 }
