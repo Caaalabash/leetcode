@@ -1,4 +1,4 @@
-package problem0046
+package problem0042
 
 // 双指针i, next
 // 1. 保证i, next不越界
