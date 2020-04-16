@@ -6,7 +6,7 @@ func canJump(nums []int) bool {
 		if i > canReachIndex {
 			return false
 		}
-		if i + nums[i] > canReachIndex {
+		if i+nums[i] > canReachIndex {
 			canReachIndex = i + nums[i]
 		}
 	}
