@@ -7,13 +7,22 @@ package problem0746
 //	   	 => dp[1] = cost[1] 从平地走到索引1
 // 状态转移方程 dp[i] = min(dp[i-1]+cost[i], dp[i-2]+cost[i])
 func minCostClimbingStairs(cost []int) int {
-	dp := make([]int, len(cost))
+	length := len(cost)
+	dp := make([]int, length)
 	dp[0] = cost[0]
 	dp[1] = cost[1]
-	for i := 2; i < len(cost); i++ {
+	for i := 2; i < length; i++ {
 		dp[i] = min(dp[i-1]+cost[i], dp[i-2]+cost[i])
 	}
-	return min(dp[len(cost)-1], dp[len(cost)-2])
+	return min(dp[length-1], dp[length-2])
+}
+
+func minCostClimbingStairs1(cost []int) int {
+	a, b := cost[0], cost[1]
+	for i := 2; i < len(cost); i++ {
+		a, b = b, min(a, b)+cost[i]
+	}
+	return min(a, b)
 }
 
 func min(a, b int) int {
