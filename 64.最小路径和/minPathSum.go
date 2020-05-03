@@ -7,26 +7,18 @@ package problem0064
 //        1. 对于第一行：dp[0][j] = dp[0][j-1] + arr[0][j]
 //        2. 对于第一列：dp[j][0] = dp[j-1][0] + arr[j][0]
 func minPathSum(grid [][]int) int {
-	m := len(grid)
-	n := len(grid[0])
-	dp := make([][]int, m)
-	dp[0] = make([]int, n)
-	dp[0][0] = grid[0][0]
-
-	for i := 1; i < m; i++ {
-		dp[i] = make([]int, n)
-		dp[i][0] = dp[i-1][0] + grid[i][0]
+	for i := 1; i < len(grid); i++ {
+		grid[i][0] += grid[i-1][0]
 	}
-	for i := 1; i < n; i++ {
-		dp[0][i] = dp[0][i-1] + grid[0][i]
+	for j := 1; j < len(grid[0]); j++ {
+		grid[0][j] += grid[0][j-1]
 	}
-	for i := 1; i < m; i++ {
-		for j := 1; j < n; j++ {
-			dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+	for i := 1; i < len(grid); i++ {
+		for j := 1; j < len(grid[0]); j++ {
+			grid[i][j] += min(grid[i-1][j], grid[i][j-1])
 		}
 	}
-
-	return dp[m-1][n-1]
+	return grid[len(grid)-1][len(grid[0])-1]
 }
 
 func min(a, b int) int {

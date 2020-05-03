@@ -12,7 +12,7 @@ func minCostClimbingStairs(cost []int) int {
 	dp[0] = cost[0]
 	dp[1] = cost[1]
 	for i := 2; i < length; i++ {
-		dp[i] = min(dp[i-1]+cost[i], dp[i-2]+cost[i])
+		dp[i] = min(dp[i-1], dp[i-2]) + cost[i]
 	}
 	return min(dp[length-1], dp[length-2])
 }
