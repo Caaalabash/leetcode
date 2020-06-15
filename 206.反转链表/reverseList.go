@@ -8,17 +8,12 @@ type ListNode struct {
 // 双指针迭代
 func reverseList(head *ListNode) *ListNode {
 	var pre *ListNode = nil
-	var temp *ListNode = nil
 	cur := head
-
 	for cur != nil {
-		// 记录下一个节点
-		temp = cur.Next
-		// 当前节点指向pre
+		next := cur.Next
 		cur.Next = pre
-		// pre 和 cur 都移动到下一位
 		pre = cur
-		cur = temp
+		cur = next
 	}
 	return pre
 }

@@ -5,50 +5,46 @@ type ListNode struct {
 	Next *ListNode
 }
 
-// 在O(nlogn)时间复杂度和常数级空间复杂度，对链表进行排序 => 归并排序
-// 一些定义：
-// 1. 若算法执行所需要的辅助空间相对于输入数据n而言是一个常数，则称这个算法空间复杂度辅助空间为O(1)
-// 2. 递归算法空间复杂度：递归深度n*每次递归所要的辅助空间，如果每次递归所需要的辅助空间为常数，则递归空间复杂度O(n)
-// 所以这道题不能用递归
-// todo: 非递归做法
+// 876题(需要调整一下，避免返回nil) + 21题 + 递归
 func sortList(head *ListNode) *ListNode {
 	if head == nil || head.Next == nil {
 		return head
 	}
-	mid := getMid(head)
+	mid := middleNode(head)
 	right := mid.Next
 	mid.Next = nil
 	// 合并
-	return mergeList(sortList(head), sortList(right))
+	return mergeTwoLists(sortList(head), sortList(right))
 }
 
-// 辅助函数: 找到中点
-func getMid(head *ListNode) *ListNode {
+func middleNode(head *ListNode) *ListNode {
 	slow, fast := head, head.Next
 	for fast != nil && fast.Next != nil {
-		slow, fast = slow.Next, fast.Next.Next
+		slow = slow.Next
+		fast = fast.Next.Next
 	}
 	return slow
 }
 
-// 辅助函数: 对两个链表进行归并排序
-func mergeList(a, b *ListNode) *ListNode {
-	result := &ListNode{}
-	list := result
-	for a != nil && b != nil {
-		if a.Val < b.Val {
-			list.Next = a
-			a = a.Next
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	preHead := ListNode{}
+	prev := &preHead
+
+	for l1 != nil && l2 != nil {
+		if l1.Val <= l2.Val {
+			prev.Next = l1
+			l1 = l1.Next
 		} else {
-			list.Next = b
-			b = b.Next
+			prev.Next = l2
+			l2 = l2.Next
 		}
-		list = list.Next
+		prev = prev.Next
 	}
-	if a != nil {
-		list.Next = a
-	} else {
-		list.Next = b
+	if l1 != nil {
+		prev.Next = l1
 	}
-	return result.Next
+	if l2 != nil {
+		prev.Next = l2
+	}
+	return preHead.Next
 }

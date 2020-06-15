@@ -27,13 +27,12 @@ func isPalindrome(head *ListNode) bool {
 		pre = cur        // 指针后移
 		cur = next       // 前进
 	}
-	// 3. 分别从开头和中点处遍历比较
-	mid := pre
-	for mid != nil {
-		if head.Val != mid.Val {
+	// 3. 此时pre是反转后半部分的开始节点，和head进行比较即可
+	for pre != nil {
+		if head.Val != pre.Val {
 			return false
 		}
-		mid = mid.Next
+		pre = pre.Next
 		head = head.Next
 	}
 	return true

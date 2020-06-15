@@ -8,15 +8,17 @@ type ListNode struct {
 // 要删除当前节点，需要记录上一个节点，因此需要一个prev节点，并且初始状态prev.Next = head
 // 最后返回prev.Next
 func removeElements(head *ListNode, val int) *ListNode {
-	prev := &ListNode{0, head}
-	result := prev
+	dummy := &ListNode{Next: head}
+	prev := dummy
+
 	for head != nil {
-		if head.Val != val {
-			prev = head
-		} else {
+		if head.Val == val {
 			prev.Next = head.Next
+		} else {
+			prev = head
 		}
 		head = head.Next
 	}
-	return result.Next
+
+	return dummy.Next
 }

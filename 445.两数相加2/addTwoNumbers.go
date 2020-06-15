@@ -40,12 +40,12 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	var result *ListNode
 	carry := 0
 	for !stack1.isEmpty() || !stack2.isEmpty() || carry > 0 {
-		sum := carry + stack1.pop() + stack2.pop()
-		carry = sum / 10
+		carry += stack1.pop() + stack2.pop()
 
-		node := &ListNode{Val: sum % 10}
-		node.Next = result
+		node := &ListNode{Val: carry % 10, Next: result}
 		result = node
+
+		carry /= 10
 	}
 	return result
 }

@@ -7,14 +7,14 @@ type ListNode struct {
 
 // 迭代: 快慢指针, 快指针跳过有重复的部分, 慢指针负责和快指针拼接
 func deleteDuplicates(head *ListNode) *ListNode {
-	virtual := &ListNode{0, head}
-	slow, fast := virtual, head
-	// 遍历链表
+	dummy := &ListNode{Next: head}
+	slow, fast := dummy, dummy.Next
+
 	for fast != nil {
-		for fast.Next != nil && fast.Val == fast.Next.Val {
+		// 找到最后一个相等值
+		for fast.Next != nil && fast.Next.Val == fast.Val {
 			fast = fast.Next
 		}
-		// 移动慢指针 / 拼接快指针
 		if slow.Next == fast {
 			slow = fast
 		} else {
@@ -22,5 +22,6 @@ func deleteDuplicates(head *ListNode) *ListNode {
 		}
 		fast = fast.Next
 	}
-	return virtual.Next
+
+	return dummy.Next
 }

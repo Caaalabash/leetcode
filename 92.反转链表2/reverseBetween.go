@@ -25,21 +25,23 @@ func reverseBetween(head *ListNode, m int, n int) *ListNode {
 }
 
 func reverseBetween1(head *ListNode, m int, n int) *ListNode {
-	dummy := &ListNode{}
-	dummy.Next = head
+	dummy := &ListNode{Next: head}
 	// 找到反转头节点的前驱节点
 	prev := dummy
 	for i := 1; i < m; i++ {
 		prev = prev.Next
 	}
-	// 反转m~n
 	cur := prev.Next
-	for i := m; i < n; i++ {
-		// 核心
-		next := cur.Next
-		cur.Next = next.Next
-		next.Next = prev.Next
-		prev.Next = next
+	prevCache, curCache := prev, cur
+	for i := m; i <= n; i++ {
+		// 采用206题的做法
+		temp := cur.Next
+		cur.Next = prev
+		prev = cur
+		cur = temp
 	}
+	// 在反转[m, n]之后，prev成为了[m, n]的头节点，cur成为了孤儿节点
+	prevCache.Next = prev
+	curCache.Next = cur
 	return dummy.Next
 }
