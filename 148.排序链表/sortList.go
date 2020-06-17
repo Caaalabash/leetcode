@@ -5,7 +5,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
-// 876题(需要调整一下，避免返回nil) + 21题 + 递归
+// 876题(需要调整一下，避免返回nil) + 21题 + 分治
 func sortList(head *ListNode) *ListNode {
 	if head == nil || head.Next == nil {
 		return head
