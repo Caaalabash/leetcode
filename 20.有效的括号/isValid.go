@@ -1,20 +1,17 @@
 package problem0020
 
-// 栈 + 遍历
-// 当为 ( [ { 时, 入栈
-// 当栈不为空且为 ) ] } 时, 和栈顶元素比较, 同则出栈
 func isValid(s string) bool {
-	var stack []string
-	m := map[string]string{
-		"(": ")",
-		"[": "]",
-		"{": "}",
+	pairs := map[byte]byte{
+		')': '(',
+		'}': '{',
+		']': '[',
 	}
-	for _, v := range s {
-		strV := string(v)
-		if strV == "{" || strV == "(" || strV == "[" {
-			stack = append(stack, strV)
-		} else if len(stack) != 0 && strV == m[stack[len(stack)-1]] {
+	stack := make([]byte, 0)
+
+	for i := 0; i < len(s); i++ {
+		if s[i] == '(' || s[i] == '{' || s[i] == '[' {
+			stack = append(stack, s[i])
+		} else if len(stack) > 0 && stack[len(stack)-1] == pairs[s[i]] {
 			stack = stack[:len(stack)-1]
 		} else {
 			return false
