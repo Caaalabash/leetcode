@@ -2,19 +2,19 @@ package problem0703
 
 import "sort"
 
+// https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/
+// 显然不能保存数据流中的所有数据，而是只保存k个最大的数据，构建小顶堆
 type KthLargest struct {
 	nums []int
 	k    int
 }
 
 func Constructor(k int, nums []int) KthLargest {
-	// 若是k小于nums长度，则先降序排序nums，然后保留前k个元素，最后调整堆
-	if k < len(nums) {
+	if len(nums) > k {
 		sort.Ints(nums)
 		nums = nums[len(nums)-k:]
 	}
-	siftUp(nums)
-
+	heapify(nums)
 	return KthLargest{
 		nums: nums,
 		k:    k,
@@ -22,9 +22,9 @@ func Constructor(k int, nums []int) KthLargest {
 }
 
 func (this *KthLargest) Add(val int) int {
-	if this.k > len(this.nums) {
+	if len(this.nums) < this.k {
 		this.nums = append(this.nums, val)
-		siftUp(this.nums)
+		siftUp(this.nums, len(this.nums) - 1)
 	} else {
 		if val > this.nums[0] {
 			this.nums[0] = val
@@ -34,42 +34,38 @@ func (this *KthLargest) Add(val int) int {
 	return this.nums[0]
 }
 
+func heapify(nums []int) {
+	for last := (len(nums) - 2) / 2; last >= 0; last-- {
+		siftDown(nums, last)
+	}
+}
+
 // 自顶向下调整，用于调整堆顶
 func siftDown(nums []int, index int) {
-	numsLen := len(nums)
-	minIndex := index
-	for {
-		left, right := 2*index+1, 2*index+2
-		if left < numsLen && nums[left] < nums[minIndex] {
-			minIndex = left
-		}
-		if right < numsLen && nums[right] < nums[minIndex] {
-			minIndex = right
-		}
-		if minIndex == index {
-			break
-		}
-		swap(nums, index, minIndex)
-		index = minIndex
+	leftChildIndex := index * 2 + 1
+	if leftChildIndex >= len(nums) {
+		return
+	}
+	if leftChildIndex + 1 < len(nums) && less(nums[leftChildIndex + 1], nums[leftChildIndex]) {
+		leftChildIndex++
+	}
+	if less(nums[leftChildIndex], nums[index]) {
+		swap(nums, index, leftChildIndex)
+		siftDown(nums, leftChildIndex)
 	}
 }
 
 // 自底向上调整，用于调整整个堆
-func siftUp(nums []int) {
-	numsLen := len(nums)
-	for parent := numsLen/2 - 1; parent >= 0; parent-- {
-		minIndex := parent
-		left, right := 2*parent+1, 2*parent+2
-		if left < numsLen && nums[left] < nums[minIndex] {
-			minIndex = left
-		}
-		if right < numsLen && nums[right] < nums[minIndex] {
-			minIndex = right
-		}
-		if parent != minIndex {
-			swap(nums, parent, minIndex)
-		}
+func siftUp(nums []int, index int) {
+	parentIndex := (index - 1) / 2
+	if less(nums[index], nums[parentIndex]) {
+		swap(nums, index, parentIndex)
+		siftUp(nums, parentIndex)
 	}
+}
+
+func less(a, b int) bool {
+	return a < b
 }
 
 func swap(nums []int, i, j int) {
