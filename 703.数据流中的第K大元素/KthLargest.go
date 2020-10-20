@@ -24,7 +24,7 @@ func Constructor(k int, nums []int) KthLargest {
 func (this *KthLargest) Add(val int) int {
 	if len(this.nums) < this.k {
 		this.nums = append(this.nums, val)
-		siftUp(this.nums, len(this.nums) - 1)
+		siftUp(this.nums, len(this.nums)-1)
 	} else {
 		if val > this.nums[0] {
 			this.nums[0] = val
@@ -42,11 +42,11 @@ func heapify(nums []int) {
 
 // 自顶向下调整，用于调整堆顶
 func siftDown(nums []int, index int) {
-	leftChildIndex := index * 2 + 1
+	leftChildIndex := index*2 + 1
 	if leftChildIndex >= len(nums) {
 		return
 	}
-	if leftChildIndex + 1 < len(nums) && less(nums[leftChildIndex + 1], nums[leftChildIndex]) {
+	if leftChildIndex+1 < len(nums) && less(nums[leftChildIndex+1], nums[leftChildIndex]) {
 		leftChildIndex++
 	}
 	if less(nums[leftChildIndex], nums[index]) {
