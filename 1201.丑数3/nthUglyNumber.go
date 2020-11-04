@@ -21,7 +21,7 @@ func nthUglyNumber(n int, a int, b int, c int) int {
 				right = mid - 1
 			}
 		} else if num > n {
-			right = mid
+			right = mid - 1
 		} else {
 			left = mid + 1
 		}
