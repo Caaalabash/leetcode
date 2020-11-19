@@ -42,3 +42,21 @@ func postorderTraversal(root *TreeNode) []int {
 	}
 	return result
 }
+
+// dfs
+func postorderTraversal1(root *TreeNode) []int {
+	var (
+		result []int
+		dfs    func(node *TreeNode)
+	)
+	dfs = func(node *TreeNode) {
+		if node == nil {
+			return
+		}
+		dfs(node.Left)
+		dfs(node.Right)
+		result = append(result, node.Val)
+	}
+	dfs(root)
+	return result
+}

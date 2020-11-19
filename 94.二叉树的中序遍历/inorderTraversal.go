@@ -6,10 +6,12 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-// 递归做法
+// dfs
 func inorderTraversal(root *TreeNode) []int {
-	var result []int
-	var dfs func(node *TreeNode)
+	var (
+		result []int
+		dfs    func(node *TreeNode)
+	)
 	dfs = func(node *TreeNode) {
 		if node == nil {
 			return
