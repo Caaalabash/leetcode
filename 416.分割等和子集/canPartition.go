@@ -1,87 +1,71 @@
 package problem0416
 
-// 0-1背包问题
-// 传统的01背包问题要求所选取的物品重量之和不能超背包的总重量，这道题则要求所选取的数字和恰好等于整个数组元素和的一半
-func canPartition(nums []int) bool {
-	n := len(nums)
-	// 排除条件1：数组长度小于2
-	if n < 2 {
-		return false
-	}
-	sum, max := 0, 0
-	for _, v := range nums {
-		sum += v
-		if v > max {
-			max = v
-		}
-	}
-	// 排除条件2：数组和为奇数
-	if sum%2 != 0 {
-		return false
-	}
-	// 排除条件3：存在一个数大于数组和的一半
-	target := sum / 2
-	if max > target {
-		return false
-	}
-	// dp[i][j]表示：能否在nums[0, i]中选取若干个数其和恰好为j
-	dp := make([][]bool, n)
-	for i := range dp {
-		dp[i] = make([]bool, target+1)
-	}
-	// 边界情况1：不选取任何正整数，其和为0
-	for i := 0; i < n; i++ {
-		dp[i][0] = true
-	}
-	// 边界条件2：i为0时，只能选择nums[0]
-	dp[0][nums[0]] = true
-	// 状态转移方程：
-	// dp[i][j] = {
-	//   dp[i-1][j] || dp[i-1][j-nums[i]], j >= nums[i]
-	//   dp[i-1][j]						 , j < nums[i]
-	// }
-	for i := 1; i < n; i++ {
-		for j := 1; j <= target; j++ {
-			if j >= nums[i] {
-				dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i]]
-			} else {
-				dp[i][j] = dp[i-1][j]
-			}
-		}
-	}
-	return dp[n-1][target]
-}
+// 经典01背包问题
+// 1. 明确状态和选择：
+// 状态：「可选择的物品」、「背包的容量」
+// 选择：「装进背包」、「不装进背包」
+// 2. 明确dp数组的定义：
+// 结合状态和题目需求，得到dp[i][j]含义: 对于前i个可选择的物品、背包容量为j时能装下的最大价值
+// 3. 思考状态转移的逻辑：
+// 将选择体现出来：dp[i][j] = 择优(没有把第i个物品装进背包，把第i个物品装进背包) = 择优(dp[i-1][j], dp[i-1][j-weight(i)] + value(i))
+// 择优操作也需要结合题目选择：此处为max
+// 4. 边界条件：
+// 没有可选择的物品时，最大价值总是0 dp[0][...] = 0
+// 没有背包容量时，最大价值总是0 dp[...][0] = 0
 
-// 观察状态转移方程，每一行的dp值都只与上一行的dp值有关，因此只需要一个一维的数组将空间复杂度降低到O(target)
-// 因此状态转移方程为：dp[j] = dp[j] || dp[j - nums[i]]
-func canPartition1(nums []int) bool {
-	n := len(nums)
-	// 排除条件1：数组长度小于2
-	if n < 2 {
+// 对于本题
+// 状态：「可选择的物品 = 数组元素」、「背包容量 = 数组和的一半」
+// 选择：「放进子集」、「不放进子集」
+// dp[i][j]的定义：对于前i个元素，和为j时能否分割成两个相等的子集
+// 状态转移方程：dp[i][j] = 择优(没有把第i个数装进子集，把第i个数装进子集) = 择优(dp[i-1][j], dp[i-1][j-nums[i]])
+// 择优操作：||
+// 边界条件：
+//  不选取任何元素时，和为0总是成立：dp[i][0] = true
+//  只有一个正整数可以选择时，dp[0][nums[0]] = true
+func canPartition(nums []int) bool {
+	length := len(nums)
+	if length < 2 {
 		return false
 	}
-	sum, max := 0, 0
+	max, sum := 0, 0
 	for _, v := range nums {
 		sum += v
 		if v > max {
 			max = v
 		}
 	}
-	// 排除条件2：数组和为奇数
-	if sum%2 != 0 {
+	if sum%2 == 1 {
 		return false
 	}
-	// 排除条件3：存在一个数大于数组和的一半
-	target := sum / 2
-	if max > target {
+	targetSum := sum / 2
+	if max > targetSum {
 		return false
 	}
-	dp := make([]bool, target+1)
+	//二维dp数组解法，降维度等于投影
+	//dp := make([][]bool, length)
+	//for i := range dp {
+	//	dp[i] = make([]bool, targetSum+1)
+	//	dp[i][0] = true
+	//}
+	//dp[0][nums[0]] = true
+	//for i := 1; i < length; i++ {
+	//	for j := 1; j < targetSum+1; j++ {
+	//		if j >= nums[i] {
+	//			dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i]]
+	//		} else {
+	//			dp[i][j] = dp[i-1][j]
+	//		}
+	//	}
+	//}
+	//return dp[length-1][targetSum]
+
+	// 一维dp数组解法
+	dp := make([]bool, targetSum+1)
 	dp[0] = true
-	for i := 1; i < n; i++ {
-		for j := target; j >= nums[i]; j-- {
+	for i := 1; i < length; i++ {
+		for j := targetSum; j >= nums[i]; j-- {
 			dp[j] = dp[j] || dp[j-nums[i]]
 		}
 	}
-	return dp[target]
+	return dp[targetSum]
 }
