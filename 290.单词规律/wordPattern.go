@@ -1,4 +1,4 @@
-package probelm0290
+package problem0290
 
 import (
 	"strings"
