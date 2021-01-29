@@ -11,7 +11,7 @@ func subarraySum(nums []int, k int) int {
 	for _, num := range nums {
 		sum += num
 		// 如果前面有这个前缀和，这部分就和第一题很像
-		if val, ok := preMap[sum - k]; ok {
+		if val, ok := preMap[sum-k]; ok {
 			result += val
 		}
 		preMap[sum]++
