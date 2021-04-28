@@ -6,11 +6,12 @@
 // 单调栈
 // 题目描述："nums1是nums2的子集" + "在nums2中对应位置的右边找到第一个比x大的元素" => nums1只是一个幌子，这就是求出一个递增栈
 function nextGreaterElement(nums1, nums2) {
+	// cache用来存放 元素-元素对应的下一个更大元素 的对应关系
 	const cache = {}
+	// stack用来存放 未求出下一个更大元素的 元素
 	const stack = []
 	for (const num of nums2) {
-		// 递增栈
-		// 例如 已有栈[4,2]，当前num为6，那么对2来说，6是它的nextGreaterElement, 对4来说，6是它的nextGreaterElement
+		// 单增栈
 		while (stack.length && num > stack[stack.length-1]) {
 			cache[stack.pop()] = num
 		}
