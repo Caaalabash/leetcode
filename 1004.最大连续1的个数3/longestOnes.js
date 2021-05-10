@@ -6,23 +6,23 @@
 
 // 前缀和 + 滑动窗口
 function longestOnes(nums, k) {
-    const len = nums.length
-    let result = 0
-    let usedK = 0
-    let left = 0
-    let right = 0
-    // 窗口向右拓展的条件是：窗口中0的数量 <= k
-    for (; right < len; right++) {
-        if (nums[right] === 0) {
-            usedK++
-        }
-        while (usedK > k) {
-            if (nums[left] === 0) {
-                usedK--
-            }
-            left++
-        }
-        result = Math.max(result, right - left + 1)
+  let result = 0
+  let left = 0
+  let right = 0
+
+  while (right < nums.length) {
+    if (nums[right] === 0) {
+      k--
     }
-    return result
+    while (k < 0) {
+      if (nums[left] === 0) {
+        k++
+      }
+      left++
+    }
+    result = Math.max(result, right - left + 1)
+    right++
+  }
+
+  return result
 }

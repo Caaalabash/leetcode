@@ -18,11 +18,14 @@ function longestSubarray(nums, limit) {
     while (queMax.length && nums[right] > queMax[queMax.length - 1]) {
       queMax.pop()
     }
+    queMax.push(nums[right])
     while (queMin.length && nums[right] < queMin[queMin.length - 1]) {
       queMin.pop()
     }
-    queMax.push(nums[right])
     queMin.push(nums[right])
+    // 在239题的基础上，理解到这里应该没问题
+    // 此时可以通过queMax[0]取得区间最大追queMin[0]取得区间最小值，如果他们的绝对差不合法，则需要收缩左区间
+    // 收缩左区间时，判断nums[left]与queMax/queMin的关系，维护即可
     while (queMax.length && queMin.length && queMax[0] - queMin[0] > limit) {
       if (nums[left] === queMin[0]) {
         queMin.shift()

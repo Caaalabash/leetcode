@@ -7,20 +7,19 @@
 
 // 滑动窗口
 function equalSubstring(s, t, maxCost) {
-    let left = 0
-    let right = 0
-    let used = 0
-    let result = 0
+  let result = 0
+  let left = 0
+  let right = 0
 
-    while (right < s.length) {
-        used += Math.abs(s[right].charCodeAt() - t[right].charCodeAt())
-        while (used > maxCost) {
-            used -=  Math.abs(s[left].charCodeAt() - t[left].charCodeAt())
-            left++
-        }
-        result = Math.max(result, right - left + 1)
-        right++
+  while (right < s.length) {
+    maxCost -= Math.abs(s[right].charCodeAt() - t[right].charCodeAt())
+    while (maxCost < 0) {
+      maxCost += Math.abs(s[left].charCodeAt() - t[left].charCodeAt())
+      left++
     }
+    result = Math.max(result, right - left + 1)
+    right++
+  }
 
-    return result
+  return result
 }
