@@ -1,16 +1,26 @@
-// 在未排序的数组中找到第K个最大的元素
-// 1 ≤ k ≤ 数组的长度
+// 0 <= lists[i].length <= 500
 
-function findKthLargest(nums, k) {
-  // 建立最大堆
-  const heap = new Heap(nums, (a, b) => nums[a] > nums[b])
-  // pop 掉 k-1 个最大值
-  for (let i = 0; i < k - 1; i++) {
-    heap.pop()
+function mergeKLists(lists) {
+  // 需要过滤空链表，然后构建一个最小堆
+  const heap = new Heap(lists.filter(i => !!i), function (a, b) {
+    return this.data[a].val < this.data[b].val
+  })
+  // 链表操作
+  const dummy = { next: null }
+  let cur = dummy
+  // 从heap中取出最小的一个item，然后将item.next塞回去
+  while (heap.length) {
+    const item = heap.pop()
+    cur.next = { val: item.val, next: null }
+    if (item.next) {
+      heap.push(item.next)
+    }
+    cur = cur.next
   }
-  // 当前最大值即是第k个最大元素
-  return heap.peak()
+
+  return dummy.next
 }
+
 
 class Heap {
   constructor(data = [], less) {
@@ -75,4 +85,3 @@ class Heap {
     }
   }
 }
-
