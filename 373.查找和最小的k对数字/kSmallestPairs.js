@@ -1,29 +1,23 @@
-// 1 <= nums.length <= 105
-// k 的取值范围是 [1, 数组中不相同的元素的个数]
-
-// 统计频率，然后将频次放进堆中
-function topKFrequent(nums, k) {
-  const counter = nums.reduce((map, num) => {
-    if (!(num in map)) {
-      map[num] = 1
-    } else {
-      map[num]++
-    }
-    return map
-  }, {})
-  const arr = Object.entries(counter).map(set => ({ value: +set[0], priority: set[1] }))
-  const heap = new Heap(arr, function (a, b) {
-    return this.data[a].priority > this.data[b].priority
+// 典型送分题
+function kSmallestPairs(nums1, nums2, k) {
+  const heap = new Heap([], function (a, b) {
+    return this.data[a][0] + this.data[a][1] < this.data[b][0] + this.data[b][1]
   })
-
+  for (const num1 of nums1) {
+    for (const num2 of nums2) {
+      heap.push([num1, num2])
+    }
+  }
   const result = []
   for (let i = 0; i < k; i++) {
-    result.push(heap.pop().value)
+    result.push(heap.pop())
   }
-  return result
+  return result.filter(Boolean)
 }
 
-// 默写heap
+
+
+// heap
 class Heap {
   constructor(data = [], less) {
     this.data = data
