@@ -1,26 +1,29 @@
-// primes以升序排列
+// 1 <= nums.length <= 105
+// k 的取值范围是 [1, 数组中不相同的元素的个数]
 
-// 从结果上来说，这题不适合最小堆
-function nthSuperUglyNumber(n, primes) {
-  // 最小堆
-  const heap = new Heap([1])
-  const existMap = { 1: true }
-
-  for (let i = 0; i < n-1; i++) {
-    const min = heap.pop()
-    for (const prime of primes) {
-      const val = min * prime
-      if (!(val in existMap)) {
-        existMap[val] = true
-        heap.push(val)
-      }
+// 统计频率，然后将频次放进堆中
+function topKFrequent(nums, k) {
+  const counter = nums.reduce((map, num) => {
+    if (!(num in map)) {
+      map[num] = 1
+    } else {
+      map[num]++
     }
-  }
+    return map
+  }, {})
+  const arr = Object.entries(counter).map(set => ({ value: +set[0], priority: set[1] }))
+  const heap = new Heap(arr, function (a, b) {
+    return this.data[a].priority > this.data[b].priority
+  })
 
-  return heap.peak()
+  const result = []
+  for (let i = 0; i < k; i++) {
+    result.push(heap.pop().value)
+  }
+  return result
 }
 
-// ---- 默写heap环节
+// 默写heap
 class Heap {
   constructor(data = [], less) {
     this.data = data
@@ -38,7 +41,7 @@ class Heap {
   push(val) {
     this.data.push(val)
     this.length++
-    this._up(this.length - 1)
+    this._up(this.length-1)
   }
   pop() {
     if (!this.length) {
@@ -56,7 +59,7 @@ class Heap {
     [this.data[i], this.data[j]] = [this.data[j], this.data[i]]
   }
   _up(i) {
-    if (i <= 0) {
+    if (this.length <= 0) {
       return
     }
     const pIndex = (i - 1) >> 1
@@ -74,7 +77,7 @@ class Heap {
       leftIndex++
     }
     if (this.less(leftIndex, i)) {
-      this._swap(i, leftIndex)
+      this._swap(leftIndex, i)
       this._down(leftIndex)
     }
   }
