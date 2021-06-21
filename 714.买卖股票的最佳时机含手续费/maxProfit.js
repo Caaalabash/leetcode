@@ -23,9 +23,6 @@ function maxProfit(prices, fee) {
 function maxProfit1(prices, fee) {
     let a = 0
     let b = -prices[0]
-    const dp = Array.from({ length: prices.length }, () => [0, 0])
-    dp[0][0] = 0
-    dp[0][1] = -prices[0]
     for (let i = 1; i < prices.length; i++) {
         [a, b] = [Math.max(a, b + prices[i] - fee), Math.max(b, a - prices[i])]
     }
