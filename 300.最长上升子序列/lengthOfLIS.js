@@ -1,6 +1,6 @@
 // LIS
-// 通常会想：dp[i][j] 代表 nums[i:j] 的 LIS，但是这样推导不出来
-// 正确定义：dp[i] 代表以 nums[i] 结尾的 LIS
+// 通常会想：dp[i][j] 代表 nums[i:j] 的 LIS的长度，但是这样推导不出来
+// 正确定义：dp[i] 代表以 nums[i] 结尾的 LIS的长度
 // 显然有初始值: dp[i] = 1
 // 状态转移方程：dp[i] = max(dp[j]) + 1 (0 <= j < i && nums[j] < nums[i])
 
