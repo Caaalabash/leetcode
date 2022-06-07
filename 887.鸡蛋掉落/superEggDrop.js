@@ -66,7 +66,7 @@ function superEggDrop(k, n) {
             }
         }
 
-        result = Math.min(
+        result = 1 + Math.min(
             result,
             Math.max(dp(k - 1, left - 1), dp(k, n - left)),
             Math.max(dp(k - 1, right - 1), dp(k, n - right))
