@@ -30,3 +30,20 @@ function rob(root) {
     dfs(root)
     return Math.max(f.get(root) || 0, g.get(root) || 0)
 }
+
+// 优化：观察发现，对一个几点，我们只关系他的孩子节点的f和g，可以通过调整dfs函数，省去map的空间
+function rob(root) {
+    const dfs = (node) => {
+        if (node === null) {
+            return [0, 0];
+        }
+        const l = dfs(node.left);
+        const r = dfs(node.right);
+        const selected = node.val + l[1] + r[1];
+        const notSelected = Math.max(l[0], l[1]) + Math.max(r[0], r[1]);
+        return [selected, notSelected];
+    }
+
+    const rootStatus = dfs(root);
+    return Math.max(rootStatus[0], rootStatus[1]);
+};
