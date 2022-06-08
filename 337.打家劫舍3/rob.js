@@ -31,7 +31,7 @@ function rob(root) {
     return Math.max(f.get(root) || 0, g.get(root) || 0)
 }
 
-// 优化：观察发现，对一个几点，我们只关系他的孩子节点的f和g，可以通过调整dfs函数，省去map的空间
+// 优化：观察发现，对一个节点，我们只关心他的孩子节点的f和g，可以通过调整dfs函数，省去map的空间
 function rob(root) {
     const dfs = (node) => {
         if (node === null) {
