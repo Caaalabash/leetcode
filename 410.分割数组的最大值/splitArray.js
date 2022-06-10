@@ -16,25 +16,29 @@ function splitArray(nums, m) {
         sumArr[i + 1] = sumArr[i] + nums[i]
     }
     // 初始化二维DP
-    const dp = new Array(n + 1)
-    for (let i = 0; i <= n; i++) {
+    const dp = new Array(n)
+    for (let i = 0; i < n; i++) {
         dp[i] = new Array(m + 1).fill(Number.MAX_SAFE_INTEGER)
+        // 当分割成一个子数组时，就是前缀和
+        dp[i][1] = sumArr[i + 1]
     }
-    dp[0][0] = 0
-
-    for (let i = 1; i <= n; i++) {
-        for (let j = 1; j <= Math.min(i, m); j++) {
-            for (let k = 0; k < i; k++) {
+    // 确定遍历范围
+    // i遍历范围：[1, n)
+    // j遍历范围：[2, m]
+    // k遍历范围：[0, i)，进一步确定 [j-2, i)
+    for (let i = 1; i < n; i++) {
+        for (let j = 2; j <= m; j++) {
+            for (let k = j - 2; k < i; k++) {
                 dp[i][j] = Math.min(
                     dp[i][j],
                     Math.max(
                         dp[k][j - 1],
-                        sumArr[i] - sumArr[k]
+                        sumArr[i + 1] - sumArr[k + 1]
                     )
                 )
             }
         }
     }
 
-    return dp[n][m]
+    return dp[n - 1][m]
 }
