@@ -1,17 +1,15 @@
+// 123的简化版本
 function maxProfit(prices) {
-  // 无法交易
   if (prices.length <= 1) {
     return 0
   }
-  let max = 0
-  let minPrice = 100001
-  for (let i = 0; i < prices.length; i++) {
-    const curPrice = prices[i]
-    if (curPrice < minPrice) {
-      minPrice = curPrice
-    } else if (curPrice - minPrice > max) {
-      max = curPrice - minPrice
-    }
+  let buy1 = -prices[0]
+  let sell1 = 0
+
+  for (let i = 1; i < prices.length; i++) {
+    buy1 = Math.max(buy1, -prices[i])
+    sell1 = Math.max(sell1, prices[i] + buy1)
   }
-  return max
+
+  return sell1
 }
