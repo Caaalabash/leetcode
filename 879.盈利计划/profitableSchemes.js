@@ -6,55 +6,54 @@
 //   对于第i个项目，不干他：dp[i][j][k] = dp[i-1][j][k]
 // 初始化dp数组 （项目数+1）* （人数+1）* （最小利润+1），求得dp[profit.length][n][minProfit]
 function profitableSchemes(n, minProfit, group, profit) {
-  const p = profit.length
-  const dp = new Array(p + 1)
-  for (let i = 0; i < p + 1; i++) {
-    dp[i] = new Array(n + 1)
-    for (let j = 0; j < n + 1; j++) {
-      dp[i][j] = new Array(minProfit + 1)
-      for (let k = 0; k < minProfit + 1; k++) {
-        dp[i][j][k] = k === 0 ? 1 : 0
-      }
-    }
-  }
-  for (let i = 1; i < p + 1; i++) {
-    for (let j = 0; j < n + 1; j++) {
-      for (let k = 0; k < minProfit + 1; k++) {
-        dp[i][j][k] = dp[i - 1][j][k]
-        if (j >= group[i - 1]) {
-          if (k >= profit[i - 1]) {
-            dp[i][j][k] += dp[i - 1][j - group[i - 1]][k - profit[i - 1]]
-          } else {
-            dp[i][j][k] += dp[i - 1][j - group[i - 1]][0]
-          }
+    const p = profit.length
+    const dp = new Array(p + 1)
+    for (let i = 0; i < p + 1; i++) {
+        dp[i] = new Array(n + 1)
+        for (let j = 0; j < n + 1; j++) {
+            dp[i][j] = new Array(minProfit + 1)
+            for (let k = 0; k < minProfit + 1; k++) {
+                dp[i][j][k] = k === 0 ? 1 : 0
+            }
         }
-        dp[i][j][k] %= 1000000007
-      }
     }
-  }
-  return dp[p][n][minProfit]
+    for (let i = 1; i < p + 1; i++) {
+        for (let j = 0; j < n + 1; j++) {
+            for (let k = 0; k < minProfit + 1; k++) {
+                dp[i][j][k] = dp[i - 1][j][k]
+                if (j >= group[i - 1]) {
+                    if (k >= profit[i - 1]) {
+                        dp[i][j][k] += dp[i - 1][j - group[i - 1]][k - profit[i - 1]]
+                    } else {
+                        dp[i][j][k] += dp[i - 1][j - group[i - 1]][0]
+                    }
+                }
+                dp[i][j][k] %= 1000000007
+            }
+        }
+    }
+    return dp[p][n][minProfit]
 }
 
-
-// dp[i][j][k]仅与dp[i-1][j][k]有关，压缩掉i维度，j,k维度都需要逆序遍历
+// 经典的背包问题可以使用二维动态规划求解，两个维度分别是物品和容量。
+// 这道题有两种容量，因此需要使用三维动态规划求解
+// 三个维度分别是当前可选择的工作、当前工作人数限制、当前获利状态限制
 function profitableSchemes(n, minProfit, group, profit) {
-  const p = profit.length
-  const dp = new Array(n + 1)
-  for (let j = 0; j < n + 1; j++) {
-    dp[j] = new Array(minProfit + 1)
-    for (let k = 0; k < minProfit + 1; k++) {
-      dp[j][k] = k === 0 ? 1 : 0
+    const MOD = 1e9 + 7
+    const len = group.length
+    const dp = new Array(n + 1).fill(0).map(() => new Array(minProfit + 1).fill(0))
+    // 无论当前工作人数是几，我们总能提供一种方案满足最小工作利润为0
+    for (let i = 0; i <= n; i++) {
+        dp[i][0] = 1
     }
-  }
-  for (let i = 1; i < p + 1; i++) {
-    const usePeople = group[i - 1]
-    const earn = profit[i - 1]
-    for (let j = n; j >= group[i - 1]; j--) {
-      // 本层不反转也可
-      for (let k = minProfit; k >= 0; k--) {
-        dp[j][k] = (dp[j][k] + dp[j - usePeople][Math.max(0, k - earn)]) % 1000000007
-      }
+    for (let i = 1; i <= len; i++) {
+        const members = group[i - 1]
+        const earn = profit[i - 1]
+        for (let j = n; j >= members; j--) {
+            for (let k = minProfit; k >= 0; k--) {
+                dp[j][k] = (dp[j][k] + dp[j - members][Math.max(0, k - earn)]) % MOD
+            }
+        }
     }
-  }
-  return dp[n][minProfit]
+    return dp[n][minProfit]
 }
