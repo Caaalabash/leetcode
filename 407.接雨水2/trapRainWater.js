@@ -1,114 +1,100 @@
-// 从最外层的一圈开始，判断每个元素能不能向内拓展
 function trapRainWater(heightMap) {
-  // 排除不可能接到水的情况，长度/宽度不足3
-  let row = heightMap.length
-  if (row < 3) {
-    return 0
-  }
-  let col = heightMap[0].length
-  if (col < 3) {
-    return 0
-  }
-  // 创建一个二维数组，代表是否已经被遍历过
-  const visit = Array.from({ length: row }, () =>
-    Array.from({ length: col }, () => false)
-  )
-  // 创建一个小顶堆，并将周围的一圈放进堆中
-  const heap = new Heap([], (a, b) => a.val < b.val)
-  for (let i = 0; i < row; i++) {
-    for (let j = 0; j < col; j++) {
-      if (j === 0 || i === 0 || i === row - 1 || j === col - 1) {
-        heap.push({
-          r: i,
-          c: j,
-          val: heightMap[i][j]
-        })
-        visit[i][j] = true
-      }
+    const m = heightMap.length
+    const n = heightMap[0].length
+    if (m < 3 || n < 3) {
+        return 0
     }
-  }
-
-  const dir = [-1, 0, 1, 0, -1]
-  let result = 0
-
-  while (heap.length) {
-    const { r, c, val } = heap.pop()
-    // 遍历四个方向
-    for (let i = 0; i < dir.length - 1; i++) {
-      const offsetR = r - dir[i]
-      const offsetC = c - dir[i+1]
-      if (offsetR >= 0 && offsetR < row && offsetC >= 0 && offsetC < col && !visit[offsetR][offsetC]) {
-        // 一旦下一个点的高度小于当前最小高度，则记录差值（就是接水的数量）
-        if (heightMap[offsetR][offsetC] < val) {
-          result += val - heightMap[offsetR][offsetC]
+    const visited = new Array(m).fill(0).map(() => new Array(n).fill(false))
+    const heap = new Heap([])
+    // 将最外围一圈放进heap，并修改访问状态
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (i === 0 || i === m - 1 || j === 0 || j === n - 1) {
+                heap.push({
+                    i,
+                    j,
+                    height: heightMap[i][j],
+                })
+                visited[i][j] = true
+            }
         }
-        visit[offsetR][offsetC] = true
-        // 维护这个圈
-        heap.push({
-          r: offsetR,
-          c: offsetC,
-          val: Math.max(heightMap[offsetR][offsetC], val)
-        })
-      }
     }
-  }
-  return result
+    const dirs = [-1, 0, 1, 0, -1]
+    let res = 0
+    // 当堆不为空时，拿出最低点，向四个方向走一步
+    while (heap.size) {
+        const { i, j, height } = heap.pop()
+        for (let k = 0; k < 4; k++) {
+            const di = i + dirs[k]
+            const dj = j + dirs[k + 1]
+            // 在范围内且没有访问过，标记为访问，记录高度差，入堆
+            if (0 <= di && di < m && 0 <= dj && dj < n && !visited[di][dj]) {
+                visited[di][dj] = true
+                const dHeight = heightMap[di][dj]
+                if (dHeight < height) {
+                    res += height - dHeight
+                }
+                // 注意，这里取最大值
+                heap.push({ i: di, j: dj, height: Math.max(height, dHeight) })
+            }
+        }
+    }
+    return res
 }
 
-
-// heap
+// 最小堆
 class Heap {
-  constructor(data = [], less) {
-    this.data = data
-    this.less = less || ((a, b) => a < b)
-
-    if (this.length) {
-      for (let p = (this.length - 2) >> 1; p >= 0; p--) {
-        this._down(p)
-      }
+    constructor(data = []) {
+        this.data = data
+        this.heapify()
     }
-  }
-  get length() {
-    return this.data.length
-  }
-  peak() {
-    return this.data[0]
-  }
-  push(val) {
-    this.data.push(val)
-    this._up(this.length - 1)
-  }
-  pop() {
-    if (!this.length) {
-      return
+    get size() {
+        return this.data.length
     }
-    this._swap(0, this.length - 1)
-    const popItem = this.data.pop()
-    this._down(0)
-    return popItem
-  }
-  _swap(i, j) {
-    [this.data[i], this.data[j]] = [this.data[j], this.data[i]]
-  }
-  _up(i) {
-    if (i <= 0) return
-    const pIndex = (i - 1) >> 1
-    if (this.less(this.data[i], this.data[pIndex])) {
-      this._swap(i, pIndex)
-      this._up(pIndex)
+    _swap(i, j) {
+        [this.data[i], this.data[j]] = [this.data[j], this.data[i]]
     }
-  }
-  _down(i) {
-    let leftIndex = i * 2 + 1
-    if (leftIndex >= this.length) {
-      return
+    // 维护小顶堆
+    _less(i, j) {
+        return this.data[i].height < this.data[j].height
     }
-    if (leftIndex + 1 < this.length && this.less(this.data[leftIndex+1], this.data[leftIndex])) {
-      leftIndex++
+    _up(i) {
+        if (i === 0) {
+            return
+        }
+        const pIndex = (i - 1) >> 1
+        if (this._less(i, pIndex)) {
+            this._swap(i, pIndex)
+            this._up(pIndex)
+        }
     }
-    if (this.less(this.data[leftIndex], this.data[i])) {
-      this._swap(leftIndex, i)
-      this._down(leftIndex)
+    _down(i, length) {
+        let leftIndex = (i << 1) + 1
+        if (leftIndex >= length) {
+            return
+        }
+        if (leftIndex + 1 < length && this._less(leftIndex + 1, leftIndex)) {
+            leftIndex++
+        }
+        if (this._less(leftIndex, i)) {
+            this._swap(leftIndex, i)
+            this._down(leftIndex, length)
+        }
     }
-  }
+    push(val) {
+        this.data.push(val)
+        this._up(this.data.length - 1)
+    }
+    pop() {
+        if (this.data.length === 0) return
+        this._swap(0, this.data.length - 1)
+        const popItem = this.data.pop()
+        this._down(0, this.data.length)
+        return popItem
+    }
+    heapify() {
+        for (let p = (this.data.length - 2) >> 1; p >= 0; p--) {
+            this._down(p, this.data.length)
+        }
+    }
 }
