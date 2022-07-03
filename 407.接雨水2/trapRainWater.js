@@ -5,7 +5,7 @@ function trapRainWater(heightMap) {
         return 0
     }
     const visited = new Array(m).fill(0).map(() => new Array(n).fill(false))
-    const heap = new Heap([])
+    const heap = new Heap([], (a, b) => a.height < b.height)
     // 将最外围一圈放进heap，并修改访问状态
     for (let i = 0; i < m; i++) {
         for (let j = 0; j < n; j++) {
@@ -44,8 +44,9 @@ function trapRainWater(heightMap) {
 
 // 最小堆
 class Heap {
-    constructor(data = []) {
+    constructor(data = [], less = (a, b) => a < b) {
         this.data = data
+        this.less = less
         this.heapify()
     }
     get size() {
@@ -56,7 +57,7 @@ class Heap {
     }
     // 维护小顶堆
     _less(i, j) {
-        return this.data[i].height < this.data[j].height
+        return this.less(this.data[i], this.data[j])
     }
     _up(i) {
         if (i === 0) {
