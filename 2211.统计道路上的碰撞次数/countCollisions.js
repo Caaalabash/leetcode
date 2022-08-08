@@ -1,8 +1,8 @@
 // Q2 1581
-// 栈模拟，stack空间懒得优化了
+// 栈模拟
 function countCollisions(directions) {
     const length = directions.length
-    const stack = [directions.charAt(0)]
+    let stack = [directions.charAt(0)]
     let result = 0
 
     for (let i = 1; i < length; i++) {
@@ -10,26 +10,29 @@ function countCollisions(directions) {
         let last = stack[stack.length - 1]
 
         if (last === cur) {
-            stack.push(cur)
+            if (cur !== 'S') {
+                stack.push(cur)
+            }
             continue
         }
         if (last === 'R') {
-            // RRRL -> RRS
+            // RRRL -> RRRS
             if (cur === 'L') {
                 result += 1
                 cur = 'S'
             }
+            // RRRS -> S
             while (last === 'R') {
                 result += 1
                 stack.pop()
                 last = stack[stack.length - 1]
             }
-            stack.push('S')
+            stack = ['S']
         } else if (last === 'S' && cur === 'L') {
             result += 1
-            stack.push('S')
+            stack = ['S']
         } else {
-            stack.push(cur)
+            stack = [cur]
         }
     }
 
