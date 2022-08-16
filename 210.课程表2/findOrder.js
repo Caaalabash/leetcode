@@ -1,39 +1,70 @@
-// 如果能完成，返回完成顺序，如果不能完成，返回空数组
-// 和207大部分类似
+// 基于BFS的拓扑排序算法
 function findOrder(numCourses, prerequisites) {
-  // 构建入度数组和邻接表
-  const inDegreeArr = new Array(numCourses).fill(0)
-  const map = {}
-  for (let i = 0; i < prerequisites.length; i++) {
-    inDegreeArr[prerequisites[i][0]]++
-    if (!(prerequisites[i][1] in map)) {
-      map[prerequisites[i][1]] = []
+    // 建立邻接表并计算入度
+    const graph = new Array(numCourses).fill(0).map(() => [])
+    const inDegreeArr = new Array(numCourses).fill(0)
+    for (const edge of prerequisites) {
+        graph[edge[1]].push(edge[0])
+        inDegreeArr[edge[0]]++
     }
-    map[prerequisites[i][1]].push(prerequisites[i][0])
-  }
-  // 入度为0的课程进入队列
-  const queue = []
-  for (let i = 0; i < inDegreeArr.length; i++) {
-    if (inDegreeArr[i] === 0) {
-      queue.push(i)
-    }
-  }
-  let index = 0
-  let count = 0
-  while (index < queue.length) {
-    const course = queue[index]
-    index++
-    count++
-    // 根据邻接表，减小依赖它的数据的入度
-    const dependCourse = map[course]
-    if (dependCourse && dependCourse.length) {
-      for (let i = 0; i < dependCourse.length; i++) {
-        inDegreeArr[dependCourse[i]]--
-        if (inDegreeArr[dependCourse[i]] === 0) {
-          queue.push(dependCourse[i])
+    // 将所有入度为0的点放入队列
+    const result = []
+    const q = []
+    for (let i = 0; i < numCourses; i++) {
+        if (inDegreeArr[i] === 0) {
+            q.push(i)
         }
-      }
     }
-  }
-  return count === numCourses ? queue : []
+    // 开始BFS
+    while (q.length) {
+        const t = q.pop()
+        result.push(t)
+        // 入度-1
+        for (const i of graph[t]) {
+            inDegreeArr[i]--
+            if (inDegreeArr[i] === 0) {
+                q.push(i)
+            }
+        }
+    }
+    // 判圈
+    return result.length === numCourses ? result : []
+}
+
+// 基于DFS的拓扑排序算法
+function findOrder(numCourses, prerequisites) {
+    const graph = new Array(numCourses).fill(0).map(() => [])
+    const visited = new Array(numCourses).fill(0)
+    const result = new Array(numCourses)
+    let idx = numCourses - 1
+    let hasCycle = false
+
+    // DFS
+    const dfs = (i) => {
+        visited[i] = 1
+        for (const v of graph[i]) {
+            if (visited[v] === 1) {
+                hasCycle = true
+                return
+            }
+            if (visited[v] === 0) {
+                dfs(v)
+                if (hasCycle) return
+            }
+        }
+        visited[i] = 2
+        result[idx--] = i
+    }
+    // 建图
+    for (const edge of prerequisites) {
+        graph[edge[1]].push(edge[0])
+    }
+    // 遍历所有顶点，对未搜素状态的顶点执行dfs
+    for (let i = 0; i < numCourses; i++) {
+        if (visited[i] === 0) {
+            dfs(i)
+            if (hasCycle) return []
+        }
+    }
+    return result
 }
