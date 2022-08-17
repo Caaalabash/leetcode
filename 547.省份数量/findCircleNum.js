@@ -17,17 +17,27 @@ function findCircleNum(isConnected) {
 class UnionFind {
     constructor(size) {
         this.parent = new Array(size).fill(0).map((_, index) => index)
+        this.rank = new Array(size).fill(0).map(() => 1)
         this.unionCount = 0
     }
+    // 路径压缩
     find(x) {
-        return this.parent[x] === x ? x : this.find(this.parent[x])
+        if (this.parent[x] === x) return x
+        this.parent[x] = this.find(this.parent[x])
+        return this.parent[x]
     }
     union(x, y) {
         const pX = this.find(x)
         const pY = this.find(y)
-        if (pX !== pY) {
+        if (pX === pY) return
+        this.unionCount++
+        if (this.rank[pX] >= this.rank[pY]) {
+            if (this.rank[pX] === this.rank[pY]) {
+                this.rank[pX]++
+            }
             this.parent[pY] = pX
-            this.unionCount++
+        } else {
+            this.parent[pX] = pY
         }
     }
 }
