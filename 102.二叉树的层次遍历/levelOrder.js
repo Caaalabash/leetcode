@@ -2,7 +2,6 @@ function levelOrder(root) {
 	if (!root) return []
 	const stack = [root]
 	const result = []
-	let toRight = true
 
 	while (stack.length) {
 		result.push([])
@@ -13,7 +12,6 @@ function levelOrder(root) {
 			node.left && stack.push(node.left)
 			node.right && stack.push(node.right)
 		}
-		toRight = !toRight
 	}
 	return result
 }
