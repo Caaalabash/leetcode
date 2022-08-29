@@ -1,5 +1,5 @@
 // 拓扑排序做法: 将矩阵看做图，节点的入度 = 上下左右比他小的数量
-// 然后开始拓扑排序，while循环次数就是答案
+// 然后开始拓扑排序，每次while清空当前队列，循环次数就是答案
 function longestIncreasingPath(matrix) {
     const m = matrix.length
     const n = matrix[0].length
