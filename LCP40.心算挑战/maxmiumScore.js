@@ -9,6 +9,7 @@ function maxmiumScore(cards, cnt) {
     for (const card of cards) {
         if (card % 2 === 0) {
             even.push(even[even.length - 1] + card)
+
         } else {
             odd.push(odd[odd.length - 1] + card)
         }
