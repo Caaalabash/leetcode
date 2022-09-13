@@ -2,6 +2,7 @@
 // left应该取 Math.min(...time)，即开一趟的情况
 // right应该取 left * totalTrips，即最快的车开 totalTrips 趟的情况
 // 另外js中不管使用 (left + right) >> 1 还是 (left + right) >>> 1 都会有超时的情况
+// 参考这里 https://262.ecma-international.org/#sec-numeric-types-number-leftShift
 function minimumTime(time, totalTrips) {
     // 二分查找的上界和下界
     let left = Math.min(...time)
