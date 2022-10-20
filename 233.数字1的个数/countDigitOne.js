@@ -2,23 +2,19 @@
 function countDigitOne(n) {
     const str = String(n)
     const len = str.length
-    const dfs = memo((recur, i, oneCount, limit, hasFillNumber) => {
+    const dfs = memo((recur, i, oneCount, limit) => {
         if (i === len) {
             return oneCount
         }
         let res = 0
-        if (!hasFillNumber) {
-            res = recur(i + 1, oneCount, false, false)
-        }
-        const down = hasFillNumber ? 0 : 1
         const up = limit ? Number(str[i]) : 9
-        for (let k = down; k <= up; k++) {
-            res += recur(i + 1, oneCount + Number(k === 1), limit && k === up, true)
+        for (let k = 0; k <= up; k++) {
+            res += recur(i + 1, oneCount + Number(k === 1), limit && k === up)
         }
         return res
     })
 
-    return dfs(0, 0, true, false)
+    return dfs(0, 0, true)
 }
 
 function memo(fn) {
