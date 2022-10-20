@@ -2,7 +2,6 @@
 function findIntegers(n) {
     const str = Number(n).toString(2)
     const len = str.length
-    // TODO: 解释一下这里为什么不需要前导零标识参数
     const dfs = memo((recur, i, status, isLimit) => {
         if (i === len) {
             return 1
