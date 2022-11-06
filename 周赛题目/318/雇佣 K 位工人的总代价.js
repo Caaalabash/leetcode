@@ -1,3 +1,5 @@
+const Heap = require('../../container/heap')
+
 // 比赛傻逼暴力代码超时没过
 function totalCost(costs, k, candidates) {
     let cost = 0
@@ -31,59 +33,6 @@ function totalCost(costs, k, candidates) {
         k--
     }
     return cost
-}
-
-// 比较明显用堆来做
-class Heap {
-    constructor(data = [], less) {
-        this.data = data
-        this.less = less || ((a, b) => a < b)
-
-        if (this.data.length) {
-            for (let p = (this.data.length -2) >> 1; p >= 0; p--) {
-                this._down(p)
-            }
-        }
-    }
-    get length() {
-        return this.data.length
-    }
-    peek() {
-        return this.data[0]
-    }
-    push(val) {
-        this.data.push(val)
-        this._up(this.data.length - 1)
-    }
-    pop() {
-        if (!this.data.length) return
-        this._swap(0, this.data.length - 1)
-        const popItem = this.data.pop()
-        this._down(0)
-        return popItem
-    }
-    _swap(i, j) {
-        [this.data[i], this.data[j]] = [this.data[j], this.data[i]]
-    }
-    _up(i) {
-        if (i < 1) return
-        const pIndex = (i - 1) >> 1
-        if (this.less(this.data[i], this.data[pIndex])) {
-            this._swap(i, pIndex)
-            this._up(pIndex)
-        }
-    }
-    _down(i) {
-        let leftIndex = i * 2 + 1
-        if (leftIndex >= this.data.length) return
-        if (leftIndex + 1 < this.data.length && this.less(this.data[leftIndex+1], this.data[leftIndex])) {
-            leftIndex++
-        }
-        if (this.less(this.data[leftIndex], this.data[i])) {
-            this._swap(i, leftIndex)
-            this._down(leftIndex)
-        }
-    }
 }
 
 function totalCost(costs, k, candidates) {
