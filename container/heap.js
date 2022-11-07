@@ -40,6 +40,14 @@ class Heap {
             this.down(leftIndex)
         }
     }
+    // 删除指定索引
+    remove(index) {
+        this.swap(index, this.data.length - 1)
+        const popItem = this.data.pop()
+        this.up(index)
+        this.down(index)
+        return popItem
+    }
     init() {
         for (let p = (this.data.length -2) >> 1; p >= 0; p--) {
             this.down(p)
