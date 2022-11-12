@@ -43,3 +43,20 @@ function findClosestElements(arr, k, x) {
     }
     return result
 }
+
+// 方法三：直接二分，找满足条件的区间左端点，时间复杂度来到 O(logN)
+function findClosestElements(arr, k, x) {
+    // 左端点的取值范围为[0, n - k]
+    let left = 0
+    let right = arr.length - k
+    while (left < right) {
+        const mid = left + Math.floor((right - left) / 2)
+        // 核心，比较哪个左端点差的绝对值更接近
+        if (x - arr[mid] > arr[mid + k] - x) {
+            left = mid + 1
+        } else {
+            right = mid
+        }
+    }
+    return arr.slice(left, left + k)
+}
