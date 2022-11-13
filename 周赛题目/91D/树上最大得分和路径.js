@@ -55,3 +55,56 @@ function mostProfitablePath(edges, bob, amount) {
     }
     return aliceBestScore
 }
+
+function mostProfitablePath(edges, bob, amount) {
+    // 图
+    const graph = {}
+    for (const [u, v] of edges) {
+        if (!(u in graph)) graph[u] = []
+        if (!(v in graph)) graph[v] = []
+        graph[u].push(v)
+        graph[v].push(u)
+    }
+    const n = Object.keys(graph).length
+    // 表示bob访问节点x的时间
+    const bobTime = new Array(n).fill(Number.MAX_SAFE_INTEGER)
+    const dfsBob = (x, fa, t) => {
+        // 抵达终点
+        if (x === 0) {
+            bobTime[x] = t
+            return true
+        }
+        let found = false
+        for (const next of graph[x]) {
+            if (next !== fa && dfsBob(next, x, t + 1)) {
+                found = true
+            }
+        }
+        if (found) {
+            bobTime[x] = t
+        }
+        return found
+    }
+    dfsBob(bob, -1, 0)
+    // 0到其他叶子节点
+    let result = Number.MIN_SAFE_INTEGER
+    const dfsAlice = (x, fa, aliceTime, sum) => {
+        if (aliceTime < bobTime[x]) {
+            sum += amount[x]
+        } else if (aliceTime === bobTime[x]) {
+            sum += amount[x] / 2
+        }
+        // 如果到达叶子节点，更新答案
+        if (x !== 0 && graph[x].length === 1) {
+            result = Math.max(result, sum)
+            return
+        }
+        for (const next of graph[x]) {
+            if (next !== fa) {
+                dfsAlice(next, x, aliceTime + 1, sum)
+            }
+        }
+    }
+    dfsAlice(0, -1, 0, 0)
+    return result
+}
